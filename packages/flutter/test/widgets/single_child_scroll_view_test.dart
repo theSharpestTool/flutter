@@ -1008,4 +1008,30 @@ void main() {
     await tester.pumpAndSettle();
     expect(textField.focusNode!.hasFocus, isTrue);
   });
+
+  testWidgets('Resize window with no animation', (WidgetTester tester) async {
+    tester.view.physicalSize = const Size.square(500);
+    addTearDown(tester.view.reset);
+
+    final ScrollController controller = ScrollController();
+
+    await tester.pumpWidget(
+      SingleChildScrollView(
+        controller: controller,
+        child: const SizedBox(
+          height: 2000.0,
+          child: Placeholder(),
+        ),
+      ),
+    );
+
+    /// Jump to the end
+    controller.jumpTo(controller.position.maxScrollExtent);
+    await tester.pumpAndSettle();
+
+    tester.view.physicalSize = const Size(500, 1000);
+    await tester.pump();
+
+    expect(tester.hasRunningAnimations, isFalse);
+  });
 }

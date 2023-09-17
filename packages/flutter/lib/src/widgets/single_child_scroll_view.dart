@@ -374,7 +374,7 @@ class _RenderSingleChildViewport extends RenderBox with RenderObjectWithChildMix
   }
 
   void _hasScrolled() {
-    markNeedsPaint();
+    markNeedsLayout();
     markNeedsSemanticsUpdate();
   }
 
@@ -496,7 +496,10 @@ class _RenderSingleChildViewport extends RenderBox with RenderObjectWithChildMix
     }
 
     offset.applyViewportDimension(_viewportExtent);
-    offset.applyContentDimensions(_minScrollExtent, _maxScrollExtent);
+    final bool didAcceptContentDimension = offset.applyContentDimensions(_minScrollExtent, _maxScrollExtent);
+    if (!didAcceptContentDimension) {
+      offset.applyContentDimensions(_minScrollExtent, _maxScrollExtent);
+    }
   }
 
   Offset get _paintOffset => _paintOffsetForPosition(offset.pixels);
