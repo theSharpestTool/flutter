@@ -1009,6 +1009,7 @@ void main() {
     expect(textField.focusNode!.hasFocus, isTrue);
   });
 
+  // Regression test for https://github.com/flutter/flutter/issues/105733
   testWidgets('Resize window with no animation', (WidgetTester tester) async {
     tester.view.physicalSize = const Size.square(500);
     addTearDown(tester.view.reset);
